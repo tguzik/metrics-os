@@ -1,0 +1,208 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.tguzik</groupId>
+    <artifactId>metrics-os</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <!-- Basics -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.language.version>11</java.language.version>
+        <java.jdk.version>11</java.jdk.version>
+
+        <!-- Build system and static code analysis -->
+        <linters.errorprone.version>2.3.2</linters.errorprone.version>
+        <linters.spotbugs.plugin.version>4.0.0</linters.spotbugs.plugin.version>
+        <linters.spotbugs.core.version>4.0.3</linters.spotbugs.core.version>
+        <linters.pmd.version>3.13.0</linters.pmd.version>
+
+        <!-- Unit tests and friends -->
+        <tests.junit.jupiter.launcher.version>1.7.0-M1</tests.junit.jupiter.launcher.version>
+        <tests.junit.jupiter.version>5.7.0-M1</tests.junit.jupiter.version>
+
+        <!-- Libraries -->
+        <libs.metrics.version>4.1.7</libs.metrics.version>
+        <libs.oshi.version>5.0.1</libs.oshi.version>
+        <libs.vavr.version>0.9.3</libs.vavr.version>
+        <libs.resilience4j.version>1.4.0</libs.resilience4j.version>
+
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>outdated</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <defaultGoal>versions:display-dependency-updates versions:display-plugin-updates</defaultGoal>
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <!-- For the lazy: https://github.com/dropwizard/metrics -->
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${libs.metrics.version}</version>
+        </dependency>
+        <dependency>
+            <!-- For the lazy: https://github.com/oshi/oshi -->
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>${libs.oshi.version}</version>
+        </dependency>
+        <dependency>
+            <!-- For the lazy: https://github.com/vavr-io/vavr -->
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${libs.vavr.version}</version>
+        </dependency>
+        <dependency>
+            <!-- For the lazy: https://github.com/resilience4j/resilience4j -->
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-cache</artifactId>
+            <version>${libs.resilience4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>${tests.junit.jupiter.launcher.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${tests.junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.3.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.16.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <defaultGoal>clean verify</defaultGoal>
+        <plugins>
+            <!-- Require Maven 3.6.0+ and Java 11 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M3</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <rules>
+                        <requireMavenVersion>
+                            <version>3.6</version>
+                        </requireMavenVersion>
+                        <requireJavaVersion>
+                            <version>${java.language.version}</version>
+                        </requireJavaVersion>
+                    </rules>
+                </configuration>
+            </plugin>
+
+            <!-- Basic plugins: -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <source>${java.jdk.version}</source>
+                    <target>${java.jdk.version}</target>
+                    <fork>true</fork>
+                    <compilerArgs>
+                        <arg>-XDcompilePolicy=simple</arg>
+                        <arg>-Xplugin:ErrorProne</arg>
+                    </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.errorprone</groupId>
+                            <artifactId>error_prone_core</artifactId>
+                            <version>${linters.errorprone.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M4</version>
+                <configuration>
+                    <forkedProcessTimeoutInSeconds>60</forkedProcessTimeoutInSeconds>
+                    <useUnlimitedThreads>true</useUnlimitedThreads>
+                    <failIfNoTests>true</failIfNoTests>
+                    <parallel>classes</parallel>
+                    <runOrder>random</runOrder>
+                    <useFile>false</useFile>
+                </configuration>
+            </plugin>
+
+            <!-- Static code analysis and mutation testing plugins: -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${linters.spotbugs.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>Default</threshold>
+                    <xmlOutput>true</xmlOutput>
+                    <detail>true</detail>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${linters.pmd.version}</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                            <goal>cpd-check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <verbose>true</verbose>
+                    <targetJdk>${java.jdk.version}</targetJdk>
+                    <rulesets>
+                        <ruleset>${project.basedir}/src/ci/resources/pmd.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

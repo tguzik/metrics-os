@@ -1,0 +1,8 @@
+language: java
+
+jdk:
+  - openjdk11
+
+install: echo "Don't install to local repo."
+
+script: mvn -B clean verify
