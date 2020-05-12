@@ -26,8 +26,6 @@
         <!-- Libraries -->
         <libs.metrics.version>4.1.7</libs.metrics.version>
         <libs.oshi.version>5.0.1</libs.oshi.version>
-        <libs.vavr.version>0.9.3</libs.vavr.version>
-        <libs.resilience4j.version>1.4.0</libs.resilience4j.version>
 
     </properties>
 
@@ -57,16 +55,9 @@
             <version>${libs.oshi.version}</version>
         </dependency>
         <dependency>
-            <!-- For the lazy: https://github.com/vavr-io/vavr -->
-            <groupId>io.vavr</groupId>
-            <artifactId>vavr</artifactId>
-            <version>${libs.vavr.version}</version>
-        </dependency>
-        <dependency>
-            <!-- For the lazy: https://github.com/resilience4j/resilience4j -->
-            <groupId>io.github.resilience4j</groupId>
-            <artifactId>resilience4j-cache</artifactId>
-            <version>${libs.resilience4j.version}</version>
+            <groupId>com.tguzik</groupId>
+            <artifactId>annotations</artifactId>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>
