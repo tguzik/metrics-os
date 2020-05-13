@@ -2,9 +2,9 @@ package com.tguzik.metrics.os;
 
 import static com.codahale.metrics.MetricRegistry.name;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
@@ -45,17 +45,17 @@ public class OperatingEnvironmentGaugeSet implements MetricSet {
         this.cacheTimeout = cacheTimeout;
     }
 
-    private Gauge<String> oneShotGauge( Supplier<?> uncachedSupplier ) {
+    private Gauge<String> oneShotGauge( final Supplier<?> uncachedSupplier ) {
         return new SupplierBasedLazyGauge( uncachedSupplier );
     }
 
-    private CachedGauge<String> cachedGauge( Supplier<?> uncachedSupplier ) {
+    private CachedGauge<String> cachedGauge( final Supplier<?> uncachedSupplier ) {
         return new SupplierBasedCachedGauge( clock, cacheTimeout, cacheTimeoutUnit, uncachedSupplier );
     }
 
     @Override
     public Map<String, Metric> getMetrics() {
-        final Map<String, Metric> product = new HashMap<>();
+        final Map<String, Metric> product = new ConcurrentHashMap<>();
 
         product.put( "self.pid", oneShotGauge( () -> systemInfo.getOperatingSystem().getProcessId() ) );
 
@@ -66,7 +66,7 @@ public class OperatingEnvironmentGaugeSet implements MetricSet {
     }
 
     public Map<String, Gauge<?>> operatingSystemGauges() {
-        final Map<String, Gauge<?>> product = new HashMap<>();
+        final Map<String, Gauge<?>> product = new ConcurrentHashMap<>();
         final Supplier<OperatingSystem> os = systemInfo::getOperatingSystem;
 
         product.put( "bits", oneShotGauge( () -> os.get().getBitness() ) );
@@ -101,7 +101,7 @@ public class OperatingEnvironmentGaugeSet implements MetricSet {
     protected Map<String, Gauge<?>> ipGaugeSet( final Supplier<String> defaultGatewaySupplier,
                                                 final Supplier<InternetProtocolStats.TcpStats> tcp,
                                                 final Supplier<InternetProtocolStats.UdpStats> udp ) {
-        final Map<String, Gauge<?>> product = new HashMap<>();
+        final Map<String, Gauge<?>> product = new ConcurrentHashMap<>();
 
         product.put( "gateway.default", cachedGauge( defaultGatewaySupplier ) );
 
@@ -124,7 +124,7 @@ public class OperatingEnvironmentGaugeSet implements MetricSet {
     }
 
     private Map<String, Gauge<?>> hardwareGauges() {
-        final Map<String, Gauge<?>> product = new HashMap<>();
+        final Map<String, Gauge<?>> product = new ConcurrentHashMap<>();
         final Supplier<HardwareAbstractionLayer> hw = systemInfo::getHardware;
         final Supplier<CentralProcessor> cpu = () -> hw.get().getProcessor();
 

@@ -188,6 +188,7 @@
                     <threshold>Default</threshold>
                     <xmlOutput>true</xmlOutput>
                     <detail>true</detail>
+                    <excludeFilterFile>${project.basedir}/src/ci/resources/spotbugs-exclude.xml</excludeFilterFile>
                 </configuration>
             </plugin>
             <plugin>
