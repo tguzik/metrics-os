@@ -10,8 +10,8 @@
     <properties>
         <!-- Basics -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.language.version>11</java.language.version>
-        <java.jdk.version>11</java.jdk.version>
+        <java.language.version>1.8</java.language.version>
+        <java.jdk.version>1.8</java.jdk.version>
 
         <!-- Build system and static code analysis -->
         <linters.errorprone.version>2.3.2</linters.errorprone.version>
@@ -26,6 +26,7 @@
         <!-- Libraries -->
         <libs.metrics.version>4.1.7</libs.metrics.version>
         <libs.oshi.version>5.0.1</libs.oshi.version>
+        <libs.vavr.version>0.10.2</libs.vavr.version>
 
     </properties>
 
@@ -59,7 +60,24 @@
             <artifactId>annotations</artifactId>
             <version>1.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${libs.vavr.version}</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>29.0-jre</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.30</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-launcher</artifactId>
