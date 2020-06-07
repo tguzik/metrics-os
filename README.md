@@ -1,5 +1,7 @@
 # metrics-os
 
+![Java CI with Maven](https://github.com/tguzik/metrics-os/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
+
 This project provides set of [Dropwizard Metrics](https://github.com/dropwizard/metrics) gauges that capture runtime
 environment, operating system and hardware data. This allows reporting and acting on anomalous readings using the
 same infrastructure as regular application metrics.
