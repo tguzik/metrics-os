@@ -25,7 +25,7 @@
 
         <!-- Libraries -->
         <libs.metrics.version>4.1.11</libs.metrics.version>
-        <libs.oshi.version>5.2.1</libs.oshi.version>
+        <libs.oshi.version>5.2.2</libs.oshi.version>
         <libs.vavr.version>0.10.3</libs.vavr.version>
 
     </properties>
