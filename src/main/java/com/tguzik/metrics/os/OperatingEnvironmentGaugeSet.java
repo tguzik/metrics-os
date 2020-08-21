@@ -71,7 +71,6 @@ public class OperatingEnvironmentGaugeSet implements MetricSet {
 
         product.put( "bits", oneShotGauge( () -> os.get().getBitness() ) );
         product.put( "family", oneShotGauge( () -> os.get().getFamily() ) );
-        product.put( "version", oneShotGauge( () -> os.get().getVersionInfo().toString() ) );
         product.put( "uptime", cachedGauge( () -> os.get().getSystemUptime() ) );
 
         product.put( "proc.process.count", cachedGauge( () -> os.get().getProcessCount() ) );

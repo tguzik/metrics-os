@@ -32,7 +32,6 @@ class OperatingEnvironmentGaugeSetTest {
         this.registry = new MetricRegistry();
 
         this.expectedKeys = ImmutableSet.of( "self.pid",
-                                             "os.version",
                                              "os.uptime",
                                              "os.proc.thread.count",
                                              "os.proc.process.count",
