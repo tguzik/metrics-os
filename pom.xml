@@ -14,18 +14,18 @@
         <java.jdk.version>1.8</java.jdk.version>
 
         <!-- Build system and static code analysis -->
-        <linters.errorprone.version>2.3.2</linters.errorprone.version>
+        <linters.errorprone.version>2.4.0</linters.errorprone.version>
         <linters.spotbugs.plugin.version>4.0.4</linters.spotbugs.plugin.version>
         <linters.spotbugs.core.version>4.0.3</linters.spotbugs.core.version>
         <linters.pmd.version>3.13.0</linters.pmd.version>
 
         <!-- Unit tests and friends -->
-        <tests.junit.jupiter.launcher.version>1.7.0-M1</tests.junit.jupiter.launcher.version>
-        <tests.junit.jupiter.version>5.7.0-M1</tests.junit.jupiter.version>
+        <tests.junit.jupiter.launcher.version>1.7.0-RC1</tests.junit.jupiter.launcher.version>
+        <tests.junit.jupiter.version>5.7.0-RC1</tests.junit.jupiter.version>
 
         <!-- Libraries -->
         <libs.metrics.version>4.1.12.1</libs.metrics.version>
-        <libs.oshi.version>5.2.2</libs.oshi.version>
+        <libs.oshi.version>5.2.4</libs.oshi.version>
         <libs.vavr.version>0.10.3</libs.vavr.version>
 
     </properties>
@@ -36,6 +36,9 @@
             <activation>
                 <jdk>1.8</jdk>
             </activation>
+            <properties>
+                <javac.version>9+181-r4173-1</javac.version>
+            </properties>
             <build>
                 <pluginManagement>
                     <plugins>
@@ -43,23 +46,11 @@
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-compiler-plugin</artifactId>
                             <configuration>
-                                <!-- error_prone on jdk1.8 -->
-                                <compilerId>javac-with-errorprone</compilerId>
-                                <forceJavacCompilerUse>true</forceJavacCompilerUse>
-                                <!-- /error_prone on jdk1.8 -->
+                                <fork>true</fork>
+                                <compilerArgs combine.children="append">
+                                    <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
+                                </compilerArgs>
                             </configuration>
-
-                            <!-- error_prone on jdk1.8 -->
-                            <dependencies>
-                                <dependency>
-                                    <groupId>org.codehaus.plexus</groupId>
-                                    <artifactId>plexus-compiler-javac-errorprone</artifactId>
-                                    <version>2.8.6</version>
-                                </dependency>
-                            </dependencies>
-                            <!-- /error_prone on jdk1.8 -->
-
-                            <inherited>true</inherited>
                         </plugin>
                     </plugins>
                 </pluginManagement>
