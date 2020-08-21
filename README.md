@@ -33,7 +33,6 @@ methods in the `OperatingEnvironmentGaugeSet` class.
 At the moment this library provides gauges:
 
 * `self.pid`
-* `os.version`
 * `os.uptime`
 * `os.proc.thread.count`
 * `os.proc.process.count`
