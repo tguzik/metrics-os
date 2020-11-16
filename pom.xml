@@ -24,7 +24,7 @@
         <tests.junit.jupiter.version>5.7.0</tests.junit.jupiter.version>
 
         <!-- Libraries -->
-        <libs.metrics.version>4.1.14</libs.metrics.version>
+        <libs.metrics.version>4.1.15</libs.metrics.version>
         <libs.oshi.version>5.3.5</libs.oshi.version>
         <libs.vavr.version>0.10.3</libs.vavr.version>
 
